@@ -1,6 +1,7 @@
 import logging
 import os
 
+from logging.handlers import RotatingFileHandler
 from random import randint
 
 import vk_api as vk
@@ -29,6 +30,8 @@ def main():
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         level=logging.INFO
     )
+    handler = RotatingFileHandler("vk_bot.log", maxBytes=200, backupCount=2)
+    logger.addHandler(handler)
 
     vk_session = vk.VkApi(token=vk_token)
     longpoll = VkLongPoll(vk_session)
