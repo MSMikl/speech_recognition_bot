@@ -41,11 +41,12 @@ def main():
                 event.text,
                 'ru-RU'
             )
-            vk_api.messages.send(
-                user_id=event.user_id,
-                message=message,
-                random_id=randint(1, 1000)
-            )
+            if message:
+                vk_api.messages.send(
+                    user_id=event.user_id,
+                    message=message,
+                    random_id=randint(1, 1000)
+                )
 
 
 if __name__ == '__main__':
