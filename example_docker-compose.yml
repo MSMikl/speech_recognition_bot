@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+  tg_bot:
+    image: "michalbl4/book_tg_bot:latest"
+    environment:
+      TG_TOKEN: {Токен телеграм-бота}
+      TG_USER: {id пользователя Телеграм для доставки системных уведомлений}
+      GOOGLE_PROJECT_ID: {id проекта DialogFlow}
+      GOOGLE_APPLICATION_CREDENTIALS: /config/google_auth.json
+    volumes:
+      - {Путь к файлу авторизации DialogFlow}:/config/google_auth.json
+
+
+  
+  vk_bot:
+    image: "michalbl4/book_vk_bot:latest"
+    environment:
+      TG_TOKEN: {Токен телеграм-бота}
+      TG_USER: {id пользователя Телеграм для доставки системных уведомлений}
+      GOOGLE_PROJECT_ID: {id проекта DialogFlow}
+      GOOGLE_APPLICATION_CREDENTIALS: /config/google_auth.json
+      VK_TOKEN: {Токен API группы Вконтакте}
+    volumes:
+      - {Путь к файлу авторизации DialogFlow}:/config/google_auth.json

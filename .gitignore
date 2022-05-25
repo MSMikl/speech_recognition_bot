@@ -153,4 +153,5 @@ cython_debug/
 
 
 vk_config*
-*Docker*
+docker*
+*bot-speech-recognition*
