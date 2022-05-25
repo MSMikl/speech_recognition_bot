@@ -1,10 +1,8 @@
 import logging
 import os
 
-from logging.handlers import RotatingFileHandler
-
 from dotenv import load_dotenv
-from telegram import Update
+from telegram import Update, Bot
 from telegram.ext import (
     Updater, CallbackContext, CommandHandler, MessageHandler, Filters
 )
@@ -14,9 +12,22 @@ from dialog_funcs import detect_intent_text
 logger = logging.getLogger('bot_logger')
 
 
+class TelegramLogsHandler(logging.Handler):
+
+    def __init__(self, tg_token, chat_id):
+        super().__init__()
+        self.chat_id = chat_id
+        self.logger_bot = Bot(token=tg_token)
+
+    def emit(self, record):
+        log_entry = self.format(record)
+        self.logger_bot.send_message(chat_id=self.chat_id, text=log_entry)
+
+
 def main():
     load_dotenv()
     tg_token = os.getenv('TG_TOKEN')
+    chat_id = os.getenv('TG_USER')
     project_id = os.getenv('GOOGLE_PROJECT_ID')
     updater = Updater(token=tg_token)
     dispatcher = updater.dispatcher
@@ -24,8 +35,7 @@ def main():
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         level=logging.INFO
     )
-    handler = RotatingFileHandler("tg_bot.log", maxBytes=200, backupCount=2)
-    logger.addHandler(handler)
+    logger.addHandler(TelegramLogsHandler(tg_token, chat_id))
 
     def start(update: Update, context: CallbackContext):
         context.bot.sendMessage(
@@ -52,4 +62,9 @@ def main():
     speech_handler = MessageHandler(Filters.text & (~Filters.command), speech)
     dispatcher.add_handler(speech_handler)
 
+    logger.info('Бот стартует')
     updater.start_polling()
+
+
+if __name__ == '__main__':
+    main()

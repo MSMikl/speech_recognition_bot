@@ -1,17 +1,29 @@
 import logging
 import os
 
-from logging.handlers import RotatingFileHandler
 from random import randint
 
 import vk_api as vk
 
 from dotenv import load_dotenv
+from telegram import Bot
 from vk_api.longpoll import VkLongPoll, VkEventType
 
 from dialog_funcs import detect_intent_text
 
 logger = logging.getLogger('tbot')
+
+
+class TelegramLogsHandler(logging.Handler):
+
+    def __init__(self, tg_token, chat_id):
+        super().__init__()
+        self.chat_id = chat_id
+        self.logger_bot = Bot(token=tg_token)
+
+    def emit(self, record):
+        log_entry = self.format(record)
+        self.logger_bot.send_message(chat_id=self.chat_id, text=log_entry)
 
 
 def echo(event, vk_api):
@@ -25,13 +37,14 @@ def echo(event, vk_api):
 def main():
     load_dotenv()
     vk_token = os.getenv('VK_TOKEN')
+    tg_token = os.getenv('TG_TOKEN')
+    tg_chat_id = os.getenv('TG_USER')
     project_id = os.getenv('GOOGLE_PROJECT_ID')
     logging.basicConfig(
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         level=logging.INFO
     )
-    handler = RotatingFileHandler("vk_bot.log", maxBytes=200, backupCount=2)
-    logger.addHandler(handler)
+    logger.addHandler(TelegramLogsHandler(tg_token, tg_chat_id))
 
     vk_session = vk.VkApi(token=vk_token)
     longpoll = VkLongPoll(vk_session)
