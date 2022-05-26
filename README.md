@@ -42,11 +42,11 @@
       GOOGLE_PROJECT_ID = {id проекта DialogFlow}
       GOOGLE_APPLICATION_CREDENTIALS = {Путь к файлу авторизации DialogFlow}
       VK_TOKEN = {Токен API группы Вконтакте}
-      
-Для обучения DialogFlow набору стандартных запросов из файла `questions.json` один раз следует выполнить команду
-
-    pythion create_intents.py
     
+Установить зависимости, выполнив
+
+    pip install -r requirements.txt
+
 Команда для запуска телеграм-бота 
 
     python tg_bot.py
@@ -54,6 +54,12 @@
 Команда для запуска бота Вконтакте
 
     python vk_bot.py
+
+## Предварительное обучение DialogFlow
+
+Набор стандартных вопросов и ответов к ним находится в файле `questions.json` в формате словаря. Для обучения DialogFlow этому набору следует выполнить команду
+
+    pythion create_intents.py
 
 ## Использование
 
