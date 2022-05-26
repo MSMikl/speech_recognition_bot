@@ -32,17 +32,16 @@ def start(update: Update, context: CallbackContext):
 
 
 def speech(update: Update, context: CallbackContext):
-    message = detect_intent_text(
+    message, _ = detect_intent_text(
             context.bot_data.get('project_id'),
             update.effective_chat.id,
             update.message.text,
             'ru-RU'
         )
-    if message:
-        context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text=message
-        )
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=message
+    )
 
 
 def main():
@@ -51,7 +50,7 @@ def main():
     chat_id = os.getenv('TG_USER')
     project_id = os.getenv('GOOGLE_PROJECT_ID')
     updater = Updater(token=tg_token)
-    
+
     dispatcher = updater.dispatcher
     dispatcher.bot_data['project_id'] = project_id
 

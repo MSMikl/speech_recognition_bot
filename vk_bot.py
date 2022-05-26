@@ -51,13 +51,13 @@ def main():
     vk_api = vk_session.get_api()
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-            message = detect_intent_text(
+            message, fallback = detect_intent_text(
                 project_id,
                 event.user_id,
                 event.text,
                 'ru-RU'
             )
-            if message:
+            if not fallback:
                 vk_api.messages.send(
                     user_id=event.user_id,
                     message=message,
