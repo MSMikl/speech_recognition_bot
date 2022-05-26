@@ -15,14 +15,6 @@ from tg_logging_handler import TelegramLogsHandler
 logger = logging.getLogger('tbot')
 
 
-def echo(event, vk_api):
-    vk_api.messages.send(
-        user_id=event.user_id,
-        message=event.text,
-        random_id=randint(1, 1000)
-    )
-
-
 def main():
     load_dotenv()
     vk_token = os.getenv('VK_TOKEN')
