@@ -5,7 +5,7 @@ services:
     image: "michalbl4/book_tg_bot:latest"
     environment:
       TG_TOKEN: {Токен телеграм-бота}
-      TG_USER: {id пользователя Телеграм для доставки системных уведомлений}
+      TG_USER_ID: {id пользователя Телеграм для доставки системных уведомлений}
       GOOGLE_PROJECT_ID: {id проекта DialogFlow}
       GOOGLE_APPLICATION_CREDENTIALS: /config/google_auth.json
     volumes:
@@ -17,7 +17,7 @@ services:
     image: "michalbl4/book_vk_bot:latest"
     environment:
       TG_TOKEN: {Токен телеграм-бота}
-      TG_USER: {id пользователя Телеграм для доставки системных уведомлений}
+      TG_USER_ID: {id пользователя Телеграм для доставки системных уведомлений}
       GOOGLE_PROJECT_ID: {id проекта DialogFlow}
       GOOGLE_APPLICATION_CREDENTIALS: /config/google_auth.json
       VK_TOKEN: {Токен API группы Вконтакте}
