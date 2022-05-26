@@ -24,42 +24,50 @@ class TelegramLogsHandler(logging.Handler):
         self.logger_bot.send_message(chat_id=self.chat_id, text=log_entry)
 
 
+def start(update: Update, context: CallbackContext):
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text='Здравствуйте'
+    )
+
+
+def speech(update: Update, context: CallbackContext):
+    message = detect_intent_text(
+            context.bot_data.get('project_id'),
+            update.effective_chat.id,
+            update.message.text,
+            'ru-RU'
+        )
+    if message:
+        context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=message
+        )
+
+
 def main():
     load_dotenv()
     tg_token = os.getenv('TG_TOKEN')
     chat_id = os.getenv('TG_USER')
     project_id = os.getenv('GOOGLE_PROJECT_ID')
     updater = Updater(token=tg_token)
+    
     dispatcher = updater.dispatcher
+    dispatcher.bot_data['project_id'] = project_id
+
     logging.basicConfig(
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         level=logging.INFO
     )
     logger.addHandler(TelegramLogsHandler(tg_token, chat_id))
 
-    def start(update: Update, context: CallbackContext):
-        context.bot.sendMessage(
-            chat_id=update.effective_chat.id,
-            text='Здравствуйте'
-        )
-
-    def speech(update: Update, context: CallbackContext):
-        message = detect_intent_text(
-                project_id,
-                update.effective_chat.id,
-                update.message.text,
-                'ru-RU'
-            )
-        if message:
-            context.bot.sendMessage(
-                chat_id=update.effective_chat.id,
-                text=message
-            )
-
     start_handler = CommandHandler('start', start)
     dispatcher.add_handler(start_handler)
 
-    speech_handler = MessageHandler(Filters.text & (~Filters.command), speech)
+    speech_handler = MessageHandler(
+        Filters.text & (~Filters.command),
+        speech
+    )
     dispatcher.add_handler(speech_handler)
 
     logger.info('Бот стартует')
