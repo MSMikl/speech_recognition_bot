@@ -59,7 +59,7 @@
 
 Набор стандартных вопросов и ответов к ним находится в файле `questions.json` в формате словаря. Для обучения DialogFlow этому набору следует выполнить команду
 
-    pythion create_intents.py
+    python create_intents.py
 
 ## Использование
 
