@@ -8,8 +8,8 @@ from google.cloud import dialogflow
 def main():
     load_dotenv()
     project_id = os.getenv('GOOGLE_PROJECT_ID')
-    with open('questions.json', 'r', encoding='utf-8') as my_file:
-        questions = json.load(my_file)
+    with open('questions.json', 'r', encoding='utf-8') as file:
+        questions = json.load(file)
     for name, question in questions.items():
         create_intent(
             project_id,
