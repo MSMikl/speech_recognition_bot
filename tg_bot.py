@@ -37,7 +37,7 @@ def speech(update: Update, context: CallbackContext):
 def main():
     load_dotenv()
     tg_token = os.getenv('TG_TOKEN')
-    chat_id = os.getenv('TG_USER')
+    chat_id = os.getenv('TG_USER_ID')
     project_id = os.getenv('GOOGLE_PROJECT_ID')
     updater = Updater(token=tg_token)
 

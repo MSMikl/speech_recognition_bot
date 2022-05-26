@@ -19,7 +19,7 @@ def main():
     load_dotenv()
     vk_token = os.getenv('VK_TOKEN')
     tg_token = os.getenv('TG_TOKEN')
-    tg_chat_id = os.getenv('TG_USER')
+    tg_chat_id = os.getenv('TG_USER_ID')
     project_id = os.getenv('GOOGLE_PROJECT_ID')
     logging.basicConfig(
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
